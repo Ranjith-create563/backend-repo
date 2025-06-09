@@ -16,6 +16,10 @@ app.use(express.json());
 // Routes
 app.use('/api/products', productRoutes);
 
+app.get('/', (req, res) => {
+  res.json({ message: 'API is working' });
+});
+
 // DB connect and then run server
 connectDB()
   .then(() => {
