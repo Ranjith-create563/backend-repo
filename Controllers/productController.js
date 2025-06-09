@@ -6,15 +6,19 @@ exports.getFilteredProducts = async (req, res) => {
     const filters = req.query;  // or req.body depending on your request
 
     const filter = {};
+    
 
-     if (filters.location) filter.location = { $in: filters.location.split(',') };
+if (filters.location) {
+  const locations = Array.isArray(filters.location)
+    ? filters.location
+    : filters.location.split(',');
 
-if(Array. isArray(filters.location)) {
-  const locations = filters.location.map (loc => 
-    new RegExp(`^${loc.trim()}$`, 'i')
-  )
-   filter.location = { $in: locations };
+  filter.location = {
+    $in: locations.map(loc => new RegExp(`^${loc.trim()}$`, 'i'))
+  };
 }
+
+
 
     if (filters.tradeAssurance === 'true') filter.tradeAssurance = true;
     if (filters.verifiedSupplier === 'true') filter.verified = true;
